@@ -138,6 +138,7 @@ function initializeCountdown(testDate) {
     update = true;
     endReached = false;
     newEndTime = true;
+    alarmingTimesRemaining = alarmingTimes;
 }
 
 function initializeApp() {
@@ -378,7 +379,11 @@ function countdown() {
         if (endReached == false) { // Blinken + Farbe ändern + Push-Notification:
             message = "Zeit abgelaufen";
             if (programJustStarted == false) {
-                displayNotification(message);
+                if (alarmGapRemaining == 0 || localStorage.getItem("alarmFeatureActivated").match(false)) {
+                    displayNotification(message);
+                }
+            } else {
+                alarmingTimesRemaining = 0;
             }
             console.log(message);
             document.getElementById("myBar").style.width = 100 + '%';
@@ -388,15 +393,21 @@ function countdown() {
             endReached = true;
 
             // Weckerfunktion
-            if (localStorage.getItem("alarmFeatureActivated").match(true) && alarmingTimesRemaining < 0) {
+            if (localStorage.getItem("alarmFeatureActivated").match(true) && alarmingTimesRemaining > 1 && alarmGapRemaining == 0) {
                 alarmingTimesRemaining--;
                 endReached = false;
+                alarmGapRemaining = alarmGap;
             } else if (alarmingTimesRemaining == 0) {
                 alarmingTimesRemaining = alarmingTimes;
+            } else if (alarmGapRemaining > 0) {
+                endReached = false;
+                alarmGapRemaining--;
             }
         }
     }
-    programJustStarted = false;
+    if (programJustStarted == true) {
+        programJustStarted = false;
+    }
 };
 
 
@@ -431,7 +442,8 @@ const day = hour * 24;
 
 const alarmingTimes = 5;
 let alarmingTimesRemaining = alarmingTimes;
-
+const alarmGap = 1;
+let alarmGapRemaining = 0;
 
 //
 // Gespeicherte Daten laden
