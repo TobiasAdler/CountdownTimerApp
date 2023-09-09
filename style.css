@@ -1,0 +1,265 @@
+/* General */
+
+body {
+  background: #dbdbdf;
+  font-family: 'Helvetica', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 50px;
+  margin-left: 50px;
+  cursor: pointer;
+}
+
+
+/* Main Area */
+
+.main {
+  margin-left: 20rem;
+  /* Same as the width of the sidebar */
+  padding: 0px 10px;
+}
+
+.countdown-area {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 5rem;
+}
+
+.container-now {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.countdown {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.Clock,
+.End,
+.Remaining {
+  font-size: 6rem;
+}
+
+.Remaining {
+  color: rgb(0, 0, 0);
+  opacity: 1;
+  animation: blinker 1.5s linear infinite;
+  animation-play-state: paused;
+}
+
+@keyframes blinker {
+  0% {
+    opacity: 1;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+#myProgress {
+  width: 50rem;
+  background-color: rgb(196, 196, 196);
+}
+
+#myBar {
+  width: 0%;
+  height: 0.6rem;
+  background-color: rgb(68, 138, 255);
+}
+
+
+/* Countdown Panel */
+
+.datepicker {
+  min-height: 8vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.container-input-date {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.panel {
+  height: 100%;
+  margin-left: 20%;
+  width: 0%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  color: #f1f1f1;
+  background-color: #0f0f0fef;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.panel a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.panel a:hover {
+  color: #f1f1f1;
+}
+
+@media only screen and (max-width:700px) {
+
+  .Clock,
+  .End,
+  .Remaining {
+    font-size: 3rem;
+  }
+
+  .sidebar {
+    height: 150px;
+  }
+
+  #myProgress {
+    width: 20rem;
+  }
+}
+
+.heading {
+  font-size: 30px;
+  color: white;
+  padding: 10px 15px;
+}
+
+.headline {
+  font-size: 30px;
+  color: #f1f1f1;
+  padding: 10px 15px;
+  padding-top: 3rem;
+  padding-bottom: 1rem;
+}
+
+
+/* The options menu */
+
+.settings {
+  min-height: 8vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.notificationOptions {
+  padding-top: 2rem;
+  padding-bottom: 5rem;
+}
+
+.alarmOption {
+  padding-top: 2rem;
+}
+
+
+/* The info menu */
+
+.info {
+  min-height: 8vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.information {
+  padding: 10px 15px;
+}
+
+
+/* sidebar */
+
+#main {
+  transition: margin-left .5s;
+  padding: 16px;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+}
+
+.sidenav {
+  height: 100%;
+  width: 20%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.sidenav a {
+  /* The navigation menu links */
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.version {
+  padding: 6px 8px 6px 16px;
+  color: #818181;
+  position: absolute;
+  bottom: 10px;
+}
+
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  margin-top: 2rem;
+}
+
+.openbtn:hover {
+  background-color: #444;
+}
