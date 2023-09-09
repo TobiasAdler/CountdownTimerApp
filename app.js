@@ -18,6 +18,7 @@
 //
 // Hilfsfunktionen
 //
+
 Notification.requestPermission(function (status) {
     console.log('Notification permission status:', status);
 });
@@ -38,9 +39,11 @@ Date.prototype.addMinutes = function (min) {
     return this;
 }
 
+
 //
 // EventListener
 //
+
 document.querySelector('#activateCountdown').addEventListener('click', function (event) {
     event.preventDefault();
     const dateControl = document.getElementById("newAlarmDate").value;
@@ -53,21 +56,20 @@ document.querySelector('#activateCountdown').addEventListener('click', function 
     initializeCountdown(testDate);
 });
 
-
 document.querySelector('#activateCountdown2').addEventListener('click', function (event) {
     event.preventDefault();
     const hours = document.getElementById("hours").value;
     const minutes = document.getElementById("minutes").value;
 
     let newDate = new Date();
-    newDate = newDate.addHours(hours);
+    newDate.addHours(hours);
     newDate.addMinutes(minutes);
+    newDate.setSeconds(0);
 
     gapBeginning = null;
     localStorage.removeItem("beginningGap");
     initializeCountdown(newDate);
 });
-
 
 document.querySelector('#resetCountdown').addEventListener('click', function (event) {
 
@@ -106,15 +108,16 @@ document.querySelector('#alarm').addEventListener('change', function () {
 })
 
 
-
 //
 // Initialisierung des Programms
 //
+
 function initializeCss() {
     document.getElementById("myCountdownPanel").style.width = "0%";
     document.getElementById("myOptionsPanel").style.width = "0%";
     document.getElementById("myInfoPanel").style.width = "0%";
 }
+
 function initializeInput() {
 
     var defaultDate = new Date();
@@ -164,9 +167,11 @@ function initializeApp() {
     }
 }
 
+
 //
 // programmeigene Funktionen
 //
+
 function openNav() {
     const datepickerPanel = document.getElementById("myCountdownPanel");
     const optionsPanel = document.getElementById("myOptionsPanel");
@@ -231,6 +236,7 @@ function closeInfo() {
 }
 
 function displayNotification(message) {
+    console.log("Push-Notification!");
     if (Notification.permission == 'granted') {
         navigator.serviceWorker.getRegistration().then(function (reg) {
             var options = {
@@ -248,7 +254,6 @@ function displayNotification(message) {
 }
 
 function startAnimation() {
-
     var x = document.getElementById("Remaining");
     x.style.color = "Red";
 
@@ -260,7 +265,6 @@ function startAnimation() {
 }
 
 function stopAnimation() {
-
     // remove animation 
     document.querySelector('.Remaining').style.animation = 'none';
 
@@ -276,13 +280,13 @@ function padTo2Digits(num) {
     return String(num).padStart(2, '0');
 };
 
+
 //
 // Die Hauptfunktion
 //
+
 function countdown() {
-    //
     // Berechnung der Differenz
-    //
     const countDate = alarmDate;
     const today = new Date();
     const now = today.getTime();
@@ -293,36 +297,26 @@ function countdown() {
         gapBeginning = gap;
         localStorage.setItem("beginningGap", gapBeginning);
     }
-    //
     // Konstante für die Zeitverschiebung:
-    //
     const timeShift = today.getTimezoneOffset();
-    //
     // Anzeige der aktuellen Uhrzeit
-    //
     const nowHours = Math.floor((now % day) / hour);
     const nowMinutes = Math.floor((now % hour) / minute);
     const nowSeconds = Math.floor((now % minute) / second);
 
     document.querySelector('.Clock').innerText = padTo2Digits((nowHours - (timeShift / 60))) + ":" + padTo2Digits(nowMinutes) + ":" + (padTo2Digits(nowSeconds)) + " Uhr";
 
-    //
     // Anzeige des Alarmzeitpunktes
-    //
     if (newEndTime) {
         document.querySelector('.End').innerText = "Ende: " + (padTo2Digits(alarmDate.getHours())) + ":" + (padTo2Digits(alarmDate.getMinutes())) + " Uhr";
         newEndTime = false;
     }
 
     if (gap > 0) {
-        //
-        // Berechnung des übrigen Zeitraumes
-        //
+        // Berechnung der übrigen Zeit
         const remainingHours = Math.floor(Math.abs(alarmDate - today) / 36e5);
         const remainingMinutes = Math.floor((gap % hour) / minute);
-        //
         // ProgressBar
-        //
         if (gapBeginning != null && gapBeginning != 0) {
             /*
             p=W*100/G;
@@ -354,7 +348,10 @@ function countdown() {
                 if (((remainingMinutes + 1) % 15) == 0) { // Blinken + Farbe ändern + Push-Notification:
                     if (localStorage.getItem("pushNotificationSetting").match("always")) {
                         displayNotification(message);
+                    } else if (((remainingMinutes + 1) % 60) == 0 && localStorage.getItem("pushNotificationSetting").match("reduced")) {
+                        displayNotification(message);
                     }
+
                     startAnimation();
                 } else { // Blinken stoppen + Farbe ändern:
                     stopAnimation();
@@ -366,7 +363,7 @@ function countdown() {
                 document.querySelector('.Remaining').innerText = message;
 
                 if ((remainingMinutes + 1) == 1 || (remainingMinutes + 1) == 5 || (remainingMinutes + 1) == 10 || ((remainingMinutes + 1) % 15) == 0) { // Blinken + Farbe ändern + Push-Notification:
-                    if (localStorage.getItem("pushNotificationSetting").match("always") || localStorage.getItem("pushNotificationSetting").match("reduced")) {
+                    if (localStorage.getItem("pushNotificationSetting").match("always")) {
                         displayNotification(message);
                     }
                     startAnimation();
@@ -402,9 +399,11 @@ function countdown() {
     programJustStarted = false;
 };
 
+
 //
 // Definieren des Standartdatums + Hilfsvariablen
 //
+
 const defaultDate = new Date(2022, 5 - 1, 30, 12, 0, 0, 0);
 let alarmDate = defaultDate;
 let gapBeginning = null;
@@ -414,21 +413,30 @@ let endReached = false;
 let newEndTime = true;
 let message = "Diese Nachricht ist nie zu sehen";
 let programJustStarted = true; // Zur Vermeidung von Spam beim Start
+
+
 //
 // Festlegung der Zeitkonstanten
 //
+
 const second = 1000;
 const minute = second * 60;
 const hour = minute * 60;
 const day = hour * 24;
+
+
 //
 // Zusätzliche Konstanten & Variablen
 //
+
 const alarmingTimes = 5;
 let alarmingTimesRemaining = alarmingTimes;
+
+
 //
 // Gespeicherte Daten laden
 //
+
 if (localStorage.getItem("beginningGap") === null) {
     console.log("Keine gespeicherte beginningGap vorhanden!")
 } else {
