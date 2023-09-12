@@ -87,13 +87,13 @@ body {
 
 #myProgress {
   width: 50rem;
-  background-color: rgb(196, 196, 196);
+  background-color: #c4c4c4;
 }
 
 #myBar {
   width: 0%;
   height: 0.6rem;
-  background-color: rgb(68, 138, 255);
+  background-color: #448aff;
 }
 
 

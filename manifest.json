@@ -2,8 +2,8 @@
     "name": "Countdown Timer",
     "short_name": "Countdown Timer",
     "start_url": "./",
-    "background_color": "#6dcdb1",
-    "theme_color": "#009578",
+    "background_color": "#5592fc",
+    "theme_color": "#448aff",
     "display": "standalone",
     "icons": [
         {
