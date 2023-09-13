@@ -2,7 +2,7 @@
 // Der ServiceWorker
 //
 
- Diese Zeilen zu Testzwecken auskommentieren, aber Push-Notifications funktionieren dann nicht mehr:
+// Diese Zeilen zu Testzwecken auskommentieren, aber Push-Notifications funktionieren dann nicht mehr:
  if ("serviceWorker" in navigator) {
      navigator.serviceWorker.register("sw.js").then(registration => {
          console.log("SW Registered");
