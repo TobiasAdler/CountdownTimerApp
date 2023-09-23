@@ -3,17 +3,18 @@
 //
 
 // Diese Zeilen zu Testzwecken auskommentieren, aber Push-Notifications funktionieren dann nicht mehr:
- if ("serviceWorker" in navigator) {
-     navigator.serviceWorker.register("sw.js").then(registration => {
-         console.log("SW Registered");
-         console.log(registration);
-     }).catch(error => {
-         console.log("SW Registration failed");
-         console.log(error);
-     })
- } else {
-     console.log("SW-registration not possible");
- }
+// if ("serviceWorker" in navigator) {
+//     navigator.serviceWorker.register("sw.js").then(registration => {
+//         console.log("SW Registered");
+//         console.log(registration);
+//     }).catch(error => {
+//         console.log("SW Registration failed");
+//         console.log(error);
+//     })
+// } else {
+//     console.log("SW-registration not possible");
+// }
+
 
 //
 // Hilfsfunktionen
@@ -84,26 +85,31 @@ document.querySelector('#resetCountdown').addEventListener('click', function (ev
 document.querySelector('#notification_always').addEventListener('change', function () {
     if (this.checked) {
         localStorage.setItem("pushNotificationSetting", 'always');
+        pushNotificationMode = 'always';
     }
 })
 
 document.querySelector('#notification_reduced').addEventListener('change', function () {
     if (this.checked) {
         localStorage.setItem("pushNotificationSetting", 'reduced');
+        pushNotificationMode = 'reduced';
     }
 })
 
 document.querySelector('#notification_end').addEventListener('change', function () {
     if (this.checked) {
         localStorage.setItem("pushNotificationSetting", 'end');
+        pushNotificationMode = 'end';
     }
 })
 
 document.querySelector('#alarm').addEventListener('change', function () {
     if (this.checked) {
         localStorage.setItem("alarmFeatureActivated", true);
+        alarmOption = true;
     } else {
         localStorage.setItem("alarmFeatureActivated", false);
+        alarmOption = false;
     }
 })
 
@@ -142,6 +148,22 @@ function initializeCountdown(testDate) {
 }
 
 function initializeApp() {
+    
+    // Daten laden
+    if (localStorage.getItem("beginningGap") === null) {
+        console.log("Keine gespeicherte beginningGap vorhanden!")
+    } else {
+        gapBeginning = localStorage.getItem("beginningGap");
+    }
+
+    if (localStorage.getItem("savedDate") === null) {
+        console.log("Kein gespeichertes Datum vorhanden! :(");
+    } else {
+        console.log("Gespeichertes Datum vorhanden! :)");
+        const d1 = new Date(localStorage.getItem("savedDate"));
+        alarmDate = d1;
+    }
+
     // Benachrichtigungen
     if (localStorage.getItem("pushNotificationSetting") === null) {
         console.log("Keine gespeicherte pushNotificationSetting vorhanden!");
@@ -157,14 +179,20 @@ function initializeApp() {
     // Steuerelemente initial setzen
     if (localStorage.getItem("pushNotificationSetting").match("always")) {
         document.getElementById("notification_always").checked = true;
+        pushNotificationMode = 'always';
     } else if (localStorage.getItem("pushNotificationSetting").match("reduced")) {
         document.getElementById("notification_reduced").checked = true;
+        pushNotificationMode = 'reduced';
     } else { // notification_end
         document.getElementById("notification_end").checked = true;
+        pushNotificationMode = 'end';
     }
 
     if (localStorage.getItem("alarmFeatureActivated").match(true)) {
         document.getElementById("alarm").checked = true;
+        alarmOption = true;
+    } else {
+        alarmOption = false;
     }
 }
 
@@ -292,7 +320,6 @@ function countdown() {
     const today = new Date();
     const now = today.getTime();
     const gap = (countDate.getTime()) - now;
-    const gapDate = new Date((countDate - today));
 
     if (gapBeginning == null) {
         gapBeginning = gap;
@@ -320,8 +347,8 @@ function countdown() {
         // ProgressBar
         if (gapBeginning != null && gapBeginning != 0) {
             /*
-            p=W*100/G;
-            */
+             * p=W*100/G;
+             */
             const percentage = (((gapBeginning - gap) * 100) / gapBeginning);
             document.getElementById("myBar").style.width = percentage + '%';
         }
@@ -347,9 +374,9 @@ function countdown() {
                 }
 
                 if (((remainingMinutes + 1) % 15) == 0) { // Blinken + Farbe ändern + Push-Notification:
-                    if (localStorage.getItem("pushNotificationSetting").match("always")) {
+                    if (pushNotificationMode.match("always")) {
                         displayNotification(message);
-                    } else if (((remainingMinutes + 1) % 60) == 0 && localStorage.getItem("pushNotificationSetting").match("reduced")) {
+                    } else if (((remainingMinutes + 1) % 60) == 0 && pushNotificationMode.match("reduced")) {
                         displayNotification(message);
                     }
 
@@ -358,13 +385,12 @@ function countdown() {
                     stopAnimation();
                 }
 
-
             } else {
                 message = ("noch: " + (remainingMinutes + 1) + " min");
                 document.querySelector('.Remaining').innerText = message;
 
                 if ((remainingMinutes + 1) == 1 || (remainingMinutes + 1) == 5 || (remainingMinutes + 1) == 10 || ((remainingMinutes + 1) % 15) == 0) { // Blinken + Farbe ändern + Push-Notification:
-                    if (localStorage.getItem("pushNotificationSetting").match("always")) {
+                    if (pushNotificationMode.match("always")) {
                         displayNotification(message);
                     }
                     startAnimation();
@@ -379,7 +405,7 @@ function countdown() {
         if (endReached == false) { // Blinken + Farbe ändern + Push-Notification:
             message = "Zeit abgelaufen";
             if (programJustStarted == false) {
-                if (alarmGapRemaining == 0 || localStorage.getItem("alarmFeatureActivated").match(false)) {
+                if (alarmGapRemaining == 0 || alarmOption == false) {
                     displayNotification(message);
                 }
             } else {
@@ -393,7 +419,7 @@ function countdown() {
             endReached = true;
 
             // Weckerfunktion
-            if (localStorage.getItem("alarmFeatureActivated").match(true) && alarmingTimesRemaining > 1 && alarmGapRemaining == 0) {
+            if (alarmOption == true && alarmingTimesRemaining > 1 && alarmGapRemaining == 0) {
                 alarmingTimesRemaining--;
                 endReached = false;
                 alarmGapRemaining = alarmGap;
@@ -424,6 +450,8 @@ let endReached = false;
 let newEndTime = true;
 let message = "Diese Nachricht ist nie zu sehen";
 let programJustStarted = true; // Zur Vermeidung von Spam beim Start
+let alarmOption = false;
+let pushNotificationMode = 'always';
 
 
 //
@@ -445,23 +473,10 @@ let alarmingTimesRemaining = alarmingTimes;
 const alarmGap = 1;
 let alarmGapRemaining = 0;
 
-//
-// Gespeicherte Daten laden
-//
 
-if (localStorage.getItem("beginningGap") === null) {
-    console.log("Keine gespeicherte beginningGap vorhanden!")
-} else {
-    gapBeginning = localStorage.getItem("beginningGap");
-}
-
-if (localStorage.getItem("savedDate") === null) {
-    console.log("Kein gespeichertes Datum vorhanden! :(");
-} else {
-    console.log("Gespeichertes Datum vorhanden! :)");
-    const d1 = new Date(localStorage.getItem("savedDate"));
-    alarmDate = d1;
-}
+//
+// Aufruf der Funktionen
+//
 
 initializeCss();
 initializeInput();
