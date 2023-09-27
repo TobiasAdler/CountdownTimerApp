@@ -2,18 +2,20 @@
 // Der ServiceWorker
 //
 
-// Diese Zeilen zu Testzwecken auskommentieren, aber Push-Notifications funktionieren dann nicht mehr:
-// if ("serviceWorker" in navigator) {
-//     navigator.serviceWorker.register("sw.js").then(registration => {
-//         console.log("SW Registered");
-//         console.log(registration);
-//     }).catch(error => {
-//         console.log("SW Registration failed");
-//         console.log(error);
-//     })
-// } else {
-//     console.log("SW-registration not possible");
-// }
+/*
+ * Diese Zeilen zu Testzwecken auskommentieren, aber Push-Notifications funktionieren dann nicht mehr:
+ */
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js").then(registration => {
+        console.log("SW Registered");
+        console.log(registration);
+    }).catch(error => {
+        console.log("SW Registration failed");
+        console.log(error);
+    })
+} else {
+    console.log("SW-registration not possible");
+}
 
 
 //
@@ -138,9 +140,7 @@ function initializeInput() {
 function initializeCountdown(testDate) {
 
     alarmDate = testDate;
-    console.log("Alarm gesetzt auf: " + alarmDate);
     localStorage.setItem("savedDate", alarmDate);
-    console.log("... und gespeichert.");
     update = true;
     endReached = false;
     newEndTime = true;
@@ -159,7 +159,6 @@ function initializeApp() {
     if (localStorage.getItem("savedDate") === null) {
         console.log("Kein gespeichertes Datum vorhanden! :(");
     } else {
-        console.log("Gespeichertes Datum vorhanden! :)");
         const d1 = new Date(localStorage.getItem("savedDate"));
         alarmDate = d1;
     }
@@ -359,21 +358,19 @@ function countdown() {
         }
 
         if (update == true) {
-
-            console.log("Update wird durchgeführt");
-
             if (remainingHours > 0) {
 
+                // Setzen des Texts der Push Notification
                 if ((remainingMinutes == 59)) {
                     message = ("noch: " + (remainingHours + 1) + " h " + " 00" + " min");
                     document.querySelector('.Remaining').innerText = message;
-
                 } else {
                     message = ("noch: " + (remainingHours) + " h " + (padTo2Digits((remainingMinutes + 1))) + " min");
                     document.querySelector('.Remaining').innerText = message;
                 }
 
-                if (((remainingMinutes + 1) % 15) == 0) { // Blinken + Farbe ändern + Push-Notification:
+                // Animation & Push Notification wird ausgelöst
+                if (((remainingMinutes + 1) % 15) == 0) {
                     if (pushNotificationMode.match("always")) {
                         displayNotification(message);
                     } else if (((remainingMinutes + 1) % 60) == 0 && pushNotificationMode.match("reduced")) {
@@ -381,20 +378,22 @@ function countdown() {
                     }
 
                     startAnimation();
-                } else { // Blinken stoppen + Farbe ändern:
+                } else {
                     stopAnimation();
                 }
 
             } else {
+                // Setzen des Texts der Push Notification
                 message = ("noch: " + (remainingMinutes + 1) + " min");
                 document.querySelector('.Remaining').innerText = message;
 
-                if ((remainingMinutes + 1) == 1 || (remainingMinutes + 1) == 5 || (remainingMinutes + 1) == 10 || ((remainingMinutes + 1) % 15) == 0) { // Blinken + Farbe ändern + Push-Notification:
+                // Animation & Push Notification wird ausgelöst
+                if ((remainingMinutes + 1) == 1 || (remainingMinutes + 1) == 5 || (remainingMinutes + 1) == 10 || ((remainingMinutes + 1) % 15) == 0) {
                     if (pushNotificationMode.match("always")) {
                         displayNotification(message);
                     }
                     startAnimation();
-                } else { // Blinken stoppen + Farbe ändern:
+                } else {
                     stopAnimation();
                 }
             }
@@ -402,7 +401,7 @@ function countdown() {
         }
 
     } else {
-        if (endReached == false) { // Blinken + Farbe ändern + Push-Notification:
+        if (endReached == false) {
             message = "Zeit abgelaufen";
             if (programJustStarted == false) {
                 if (alarmGapRemaining == 0 || alarmOption == false) {
@@ -411,7 +410,6 @@ function countdown() {
             } else {
                 alarmingTimesRemaining = 0;
             }
-            console.log(message);
             document.getElementById("myBar").style.width = 100 + '%';
             document.querySelector('.Remaining').innerText = message;
             startAnimation();
