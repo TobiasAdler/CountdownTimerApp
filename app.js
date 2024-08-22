@@ -28,7 +28,7 @@ Notification.requestPermission(function (status) {
 });
 
 Date.prototype.addDays = function (days) {
-    var date = new Date(this.valueOf());
+    const date = new Date(this.valueOf());
     date.setDate(date.getDate() + days);
     return date;
 }
@@ -129,7 +129,7 @@ function initializeCss() {
 
 function initializeInput() {
 
-    var defaultDate = new Date();
+    let defaultDate = new Date();
 
     defaultDate = defaultDate.addHours(2);
     defaultDate.setMinutes(0);
@@ -160,8 +160,7 @@ function initializeApp() {
     if (localStorage.getItem("savedDate") === null) {
         console.log("Kein gespeichertes Datum vorhanden! :(");
     } else {
-        const d1 = new Date(localStorage.getItem("savedDate"));
-        alarmDate = d1;
+        alarmDate = new Date(localStorage.getItem("savedDate"));
     }
 
     // Benachrichtigungen
@@ -205,15 +204,15 @@ function openNav() {
     const datepickerPanel = document.getElementById("myCountdownPanel");
     const optionsPanel = document.getElementById("myOptionsPanel");
     const infoPanel = document.getElementById("myInfoPanel");
-    if (datepickerPanel.style.width == "0%") {
+    if (datepickerPanel.style.width === "0%") {
         datepickerPanel.style.width = "80%";
     } else {
         datepickerPanel.style.width = "0%";
     }
-    if (optionsPanel.style.width != "0%") {
+    if (optionsPanel.style.width !== "0%") {
         optionsPanel.style.width = "0%";
     }
-    if (infoPanel.style.width != "0%") {
+    if (infoPanel.style.width !== "0%") {
         infoPanel.style.width = "0%";
     }
 }
@@ -226,15 +225,15 @@ function openOptions() {
     const optionsPanel = document.getElementById("myOptionsPanel");
     const datepickerPanel = document.getElementById("myCountdownPanel");
     const infoPanel = document.getElementById("myInfoPanel");
-    if (optionsPanel.style.width == "0%") {
+    if (optionsPanel.style.width === "0%") {
         optionsPanel.style.width = "80%";
     } else {
         optionsPanel.style.width = "0%";
     }
-    if (datepickerPanel.style.width != "0%") {
+    if (datepickerPanel.style.width !== "0%") {
         datepickerPanel.style.width = "0%";
     }
-    if (infoPanel.style.width != "0%") {
+    if (infoPanel.style.width !== "0%") {
         infoPanel.style.width = "0%";
     }
 }
@@ -247,15 +246,15 @@ function openInfo() {
     const datepickerPanel = document.getElementById("myCountdownPanel");
     const optionsPanel = document.getElementById("myOptionsPanel");
     const infoPanel = document.getElementById("myInfoPanel");
-    if (infoPanel.style.width == "0%") {
+    if (infoPanel.style.width === "0%") {
         infoPanel.style.width = "80%";
     } else {
         infoPanel.style.width = "0%";
     }
-    if (datepickerPanel.style.width != "0%") {
+    if (datepickerPanel.style.width !== "0%") {
         datepickerPanel.style.width = "0%";
     }
-    if (optionsPanel.style.width != "0%") {
+    if (optionsPanel.style.width !== "0%") {
         optionsPanel.style.width = "0%";
     }
 }
@@ -266,9 +265,9 @@ function closeInfo() {
 
 function displayNotification(message) {
     console.log("Push-Notification!");
-    if (Notification.permission == 'granted') {
+    if (Notification.permission === 'granted') {
         navigator.serviceWorker.getRegistration().then(function (reg) {
-            var options = {
+            const options = {
                 body: message,
                 icon: 'images/maskable_icon_x192.png',
                 vibrate: [100, 50, 100],
@@ -283,7 +282,7 @@ function displayNotification(message) {
 }
 
 function startAnimation() {
-    var x = document.getElementById("Remaining");
+    const x = document.getElementById("Remaining");
     x.style.color = "Red";
 
     // trigger reflow
@@ -300,14 +299,14 @@ function stopAnimation() {
     // trigger reflow
     document.querySelector('.Remaining').offsetWidth;
 
-    var x = document.getElementById("Remaining");
+    const x = document.getElementById("Remaining");
     x.style.color = "Black";
     x.style.opacity = 1;
 }
 
 function padTo2Digits(num) {
     return String(num).padStart(2, '0');
-};
+}
 
 
 //
@@ -345,7 +344,7 @@ function countdown() {
         const remainingHours = Math.floor(Math.abs(alarmDate - today) / 36e5);
         const remainingMinutes = Math.floor((gap % hour) / minute);
         // ProgressBar
-        if (gapBeginning != null && gapBeginning != 0) {
+        if (gapBeginning != null && gapBeginning !== 0) {
             /*
              * p=W*100/G;
              */
@@ -353,16 +352,16 @@ function countdown() {
             document.getElementById("myBar").style.width = percentage + '%';
         }
 
-        if (savedMinutes != remainingMinutes) {
+        if (savedMinutes !== remainingMinutes) {
             savedMinutes = remainingMinutes;
             update = true;
         }
 
-        if (update == true) {
+        if (update === true) {
             if (remainingHours > 0) {
 
                 // Setzen des Texts der Push Notification
-                if ((remainingMinutes == 59)) {
+                if ((remainingMinutes === 59)) {
                     message = ("noch: " + (remainingHours + 1) + " h " + " 00" + " min");
                     document.querySelector('.Remaining').innerText = message;
                 } else {
@@ -371,10 +370,10 @@ function countdown() {
                 }
 
                 // Animation & Push Notification wird ausgelöst
-                if (((remainingMinutes + 1) % 15) == 0) {
+                if (((remainingMinutes + 1) % 15) === 0) {
                     if (pushNotificationMode.match("always")) {
                         displayNotification(message);
-                    } else if (((remainingMinutes + 1) % 60) == 0 && pushNotificationMode.match("reduced")) {
+                    } else if (((remainingMinutes + 1) % 60) === 0 && pushNotificationMode.match("reduced")) {
                         displayNotification(message);
                     }
 
@@ -389,7 +388,7 @@ function countdown() {
                 document.querySelector('.Remaining').innerText = message;
 
                 // Animation & Push Notification wird ausgelöst
-                if ((remainingMinutes + 1) == 1 || (remainingMinutes + 1) == 5 || (remainingMinutes + 1) == 10 || ((remainingMinutes + 1) % 15) == 0) {
+                if ((remainingMinutes + 1) === 1 || (remainingMinutes + 1) === 5 || (remainingMinutes + 1) === 10 || ((remainingMinutes + 1) % 15) === 0) {
                     if (pushNotificationMode.match("always")) {
                         displayNotification(message);
                     }
@@ -402,10 +401,10 @@ function countdown() {
         }
 
     } else {
-        if (endReached == false) {
+        if (endReached === false) {
             message = "Zeit abgelaufen";
-            if (programJustStarted == false) {
-                if (alarmGapRemaining == 0 || alarmOption == false) {
+            if (programJustStarted === false) {
+                if (alarmGapRemaining === 0 || alarmOption === false) {
                     displayNotification(message);
                 }
             } else {
@@ -418,11 +417,11 @@ function countdown() {
             endReached = true;
 
             // Weckerfunktion
-            if (alarmOption == true && alarmingTimesRemaining > 1 && alarmGapRemaining == 0) {
+            if (alarmOption === true && alarmingTimesRemaining > 1 && alarmGapRemaining === 0) {
                 alarmingTimesRemaining--;
                 endReached = false;
                 alarmGapRemaining = alarmGap;
-            } else if (alarmingTimesRemaining == 0) {
+            } else if (alarmingTimesRemaining === 0) {
                 alarmingTimesRemaining = alarmingTimes;
             } else if (alarmGapRemaining > 0) {
                 endReached = false;
@@ -430,10 +429,10 @@ function countdown() {
             }
         }
     }
-    if (programJustStarted == true) {
+    if (programJustStarted === true) {
         programJustStarted = false;
     }
-};
+}
 
 
 //

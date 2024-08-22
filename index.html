@@ -16,98 +16,8 @@
     <div class="sidenav">
 
         <div class="heading">
-            <img src="images/maskable_icon_x192.png" style="width:30px;height:30px;">
+            <img src="images/maskable_icon_x192.png" style="width:30px;height:30px;" alt="Logo">
             Countdown Timer
-        </div>
-
-        <!-- Countdown Panel -->
-        <div id="myCountdownPanel" class="panel">
-            <a class="closebtn" onclick="closeNav()" cursor="pointer">×</a>
-            <section class="datepicker">
-                <div class="headline">
-                    Datum & Uhrzeit einstellen
-                </div>
-                <form>
-                    <input type="date" id="newAlarmDate" name="newAlarmDate">
-                    <input type="time" id="newAlarmTime" name="newAlarmTime">
-                    <button id="activateCountdown" type="submit">Countdown aktivieren</button>
-                </form>
-            </section>
-            <section class="datepicker">
-                <div class="headline">
-                    Stunden & Minuten einstellen
-                </div>
-                <form>
-                    <input id="hours" type="number" min="0" max="100" value="1">
-                    <input id="minutes" type="number" min="0" max="59" value="0">
-                    <button id="activateCountdown2" type="submit">Countdown aktivieren</button>
-                </form>
-            </section>
-            <section class="datepicker">
-                <div class="headline">
-                    Eingestellten Countdown löschen
-                </div>
-                <button id="resetCountdown" type="submit">Reset</button>
-            </section>
-        </div>
-
-        <!-- Settings Panel -->
-        <div id="myOptionsPanel" class="panel">
-            <a class="closebtn" onclick="closeOptions()">×</a>
-            <section class="settings">
-                <form>
-                    <div class="headline">
-                        Push-Benachrichtigungen:
-                    </div>
-                    <div class="notificationOptions">
-                        <input type="radio" id="notification_always" name="push-notifications" value="Immer">
-                        <label for="notification_always">immer (alle 15min + Timerablauf)</label><br>
-
-                        <input type="radio" id="notification_reduced" name="push-notifications" value="Reduziert">
-                        <label for="notification_reduced">reduziert (alle 60min + Timerablauf)</label><br>
-
-                        <input type="radio" id="notification_end" name="push-notifications" value="Ende">
-                        <label for="notification_end">nur zum Timerablauf</label><br>
-                    </div>
-                    <div class="headline">
-                        Alarm:
-                    </div>
-                    <div class="alarmOption">
-                        <input type="checkbox" id="alarm" name="alarm" value="Wecker">
-                        <label for="alarm"> Weckerfunktion (5 Push-Benachrichtigungen bei Timerablauf)</label><br>
-<!--                        TODO: Weckerfunktion einstellbar machen-->
-                    </div>
-                </form>
-            </section>
-        </div>
-        
-        <div id="myInfoPanel" class="panel">
-            <a class="closebtn" onclick="closeInfo()">×</a>
-            <section class="info">
-                <form>
-<!--                    TODO: Changelog schreiben-->
-                    <div class="headline">
-                        Neuerungen v3.0<br><br>
-                    </div>
-                    <div class="information">
-                        ◆ TODO<br><br>
-                        ◆ TODO<br><br>
-                        ◆ TODO<br><br>
-                        ◆ TODO<br><br>
-                        ◆ TODO<br><br>
-                    </div>
-                    <div class="headline">
-                        Neuerungen v2.0<br><br>
-                    </div>
-                    <div class="information">
-                        ◆ Neues Design der App<br><br>
-                        ◆ Sidebar mit Menüpunkten hinzugefügt<br><br>
-                        ◆ Neue Möglichkeit den Countdown einzustellen (über Stunden- & Minutenangabe)<br><br>
-                        ◆ Neue Einstellungsmöglichkeiten zu Push-Benachrichtigungen<br><br>
-                        ◆ Weckerfunktion hinzugefügt<br><br>
-                    </div>
-                </form>
-            </section>
         </div>
 
         <div id="main">
@@ -116,6 +26,96 @@
             <button class="openbtn" onclick="openInfo()">ⓘ | Informationen</button>
         </div>
         <div class="version">Countdown Timer v3-indev</div>
+    </div>
+
+    <!-- Countdown Panel -->
+    <div id="myCountdownPanel" class="panel">
+        <a class="closebtn" onclick="closeNav()" cursor="pointer">×</a>
+        <section class="datepicker">
+            <div class="headline">
+                Datum & Uhrzeit einstellen
+            </div>
+            <form>
+                <input type="date" id="newAlarmDate" name="newAlarmDate">
+                <input type="time" id="newAlarmTime" name="newAlarmTime">
+                <button id="activateCountdown" type="submit">Countdown aktivieren</button>
+            </form>
+        </section>
+        <section class="datepicker">
+            <div class="headline">
+                Stunden & Minuten einstellen
+            </div>
+            <form>
+                <input id="hours" type="number" min="0" max="100" value="1">
+                <input id="minutes" type="number" min="0" max="59" value="0">
+                <button id="activateCountdown2" type="submit">Countdown aktivieren</button>
+            </form>
+        </section>
+        <section class="datepicker">
+            <div class="headline">
+                Eingestellten Countdown löschen
+            </div>
+            <button id="resetCountdown" type="submit">Reset</button>
+        </section>
+    </div>
+
+    <!-- Settings Panel -->
+    <div id="myOptionsPanel" class="panel">
+        <a class="closebtn" onclick="closeOptions()">×</a>
+        <section class="settings">
+            <form>
+                <div class="headline">
+                    Push-Benachrichtigungen:
+                </div>
+                <div class="notificationOptions">
+                    <input type="radio" id="notification_always" name="push-notifications" value="Immer">
+                    <label for="notification_always">immer (alle 15min + Timerablauf)</label><br>
+
+                    <input type="radio" id="notification_reduced" name="push-notifications" value="Reduziert">
+                    <label for="notification_reduced">reduziert (alle 60min + Timerablauf)</label><br>
+
+                    <input type="radio" id="notification_end" name="push-notifications" value="Ende">
+                    <label for="notification_end">nur zum Timerablauf</label><br>
+                </div>
+                <div class="headline">
+                    Alarm:
+                </div>
+                <div class="alarmOption">
+                    <input type="checkbox" id="alarm" name="alarm" value="Wecker">
+                    <label for="alarm"> Weckerfunktion (5 Push-Benachrichtigungen bei Timerablauf)</label><br>
+                    <!--TODO: Weckerfunktion einstellbar machen-->
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div id="myInfoPanel" class="panel">
+        <a class="closebtn" onclick="closeInfo()">×</a>
+        <section class="info">
+            <form>
+                <!--TODO: Changelog schreiben-->
+                <div class="headline">
+                    Neuerungen v3.0<br><br>
+                </div>
+                <div class="information">
+                    ◆ TODO<br><br>
+                    ◆ TODO<br><br>
+                    ◆ TODO<br><br>
+                    ◆ TODO<br><br>
+                    ◆ TODO<br><br>
+                </div>
+                <div class="headline">
+                    Neuerungen v2.0<br><br>
+                </div>
+                <div class="information">
+                    ◆ Neues Design der App<br><br>
+                    ◆ Sidebar mit Menüpunkten hinzugefügt<br><br>
+                    ◆ Neue Möglichkeit den Countdown einzustellen (über Stunden- & Minutenangabe)<br><br>
+                    ◆ Neue Einstellungsmöglichkeiten zu Push-Benachrichtigungen<br><br>
+                    ◆ Weckerfunktion hinzugefügt<br><br>
+                </div>
+            </form>
+        </section>
     </div>
 
     <!-- Main-Area -->
